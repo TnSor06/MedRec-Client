@@ -7,6 +7,10 @@ import Login from './Components/LoginAndSignUp/Login'
 import Dashboard from './Components/Dashboard/Dashboard';
 import RegisterPatient from './Components/LoginAndSignUp/RegisterPatient';
 import RegisterMedicalPractitioner from './Components/LoginAndSignUp/RegisterMedicalPractitioner';
+import RegisterDatabaseAdmin from './Components/LoginAndSignUp/RegisterDatabaseAdmin';
+import ViewHandler from './Components/Dashboard/ViewHandler';
+import UpdateHandler from './Components/Dashboard/UpdateHandler';
+import SearchHandler from './Components/Dashboard/SearchHandler';
 
 const Routes = (props) => {
     return (
@@ -14,9 +18,13 @@ const Routes = (props) => {
             <Layout>
                 <Switch>
                     <Route exact path="/login" component={Login} />
-                    <Route exact path="/" component={Dashboard} />
                     <Route exact path="/registerpatient" component={RegisterPatient} />
                     <Route exact path="/registermedicalpractitioner" component={RegisterMedicalPractitioner} />
+                    <Route exact path="/registerdatabaseadmin" component={RegisterDatabaseAdmin} />
+                    <Route exact path="/viewprofile" component={ViewHandler} />
+                    <Route exact path="/updateprofile" component={UpdateHandler} />
+                    <Route exact path="/search" component={SearchHandler} />
+                    <Route exact path="/" component={Dashboard} />
                 </Switch>
             </Layout>
         </Box>

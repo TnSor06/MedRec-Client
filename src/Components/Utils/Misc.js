@@ -37,7 +37,7 @@ const SelectedListItem = (props) => {
     const keyWords = props.keyWords
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index)
-        props.onSelectValue(props.options[selectedIndex][keyWords[1]])
+        props.onSelectValue(props.options[selectedIndex][keyWords[1]], props.options[selectedIndex][keyWords[0]])
     };
     return (
         <div className={classes.root}>
@@ -84,9 +84,9 @@ const FormFields = ({ formdata, id, onChangeForm, valueFromKey, onSelectValue, k
                     <div>
                         <CssTextField
                             id={`${formdata.config.name}`}
-                            label={formdata.showLabel ?
-                                formdata.config.label : null
-                            }
+                            label={`${formdata.showLabel ?
+                                formdata.config.label : null}${formdata.validation.required && formdata.showLabel ? "*" : ''}
+                            `}
                             type={formdata.config.type}
                             name={formdata.config.name}
                             autoComplete={formdata.config.type}
@@ -112,9 +112,9 @@ const FormFields = ({ formdata, id, onChangeForm, valueFromKey, onSelectValue, k
                         <Grid item xs={12} sm={6}>
                             <CssTextField
                                 id={`${formdata.config.name}`}
-                                label={formdata.showLabel ?
-                                    formdata.config.label : null
-                                }
+                                label={`${formdata.showLabel ?
+                                    formdata.config.label : null}${formdata.validation.required && formdata.showLabel ? "*" : ''}
+                            `}
                                 type={formdata.config.type}
                                 name={formdata.config.name}
                                 autoComplete={formdata.config.type}
@@ -151,9 +151,9 @@ const FormFields = ({ formdata, id, onChangeForm, valueFromKey, onSelectValue, k
                     <div>
                         <CssTextField
                             id={`${formdata.config.name}`}
-                            label={formdata.showLabel ?
-                                formdata.config.label : null
-                            }
+                            label={`${formdata.showLabel ?
+                                formdata.config.label : null}${formdata.validation.required && formdata.showLabel ? "*" : ''}
+                            `}
                             type={formdata.config.type}
                             name={formdata.config.name}
                             autoComplete={formdata.config.type}
@@ -184,7 +184,7 @@ const FormFields = ({ formdata, id, onChangeForm, valueFromKey, onSelectValue, k
                             height: "100%"
                         }}>
                             {formdata.showLabel ?
-                                <InputLabel htmlFor={`${formdata.config.name}_inputlabel`}>{formdata.config.label}</InputLabel> : null
+                                <InputLabel htmlFor={`${formdata.config.name}_inputlabel`}>{`${formdata.config.label}${formdata.validation.required && formdata.showLabel ? "*" : ''}`}</InputLabel> : null
                             }
                             <Select
                                 id={`${formdata.config.name}_select`}
@@ -199,7 +199,7 @@ const FormFields = ({ formdata, id, onChangeForm, valueFromKey, onSelectValue, k
                                 </MenuItem>
                                 {formdata.config.options.map((eachOpt) => {
                                     return (
-                                        <MenuItem key={eachOpt.key} value={eachOpt.key}>{eachOpt.value}</MenuItem>
+                                        <MenuItem key={eachOpt.key} value={eachOpt.value}>{eachOpt.key}</MenuItem>
                                     )
                                 }
                                 )}
@@ -251,4 +251,8 @@ const Validator = (element) => {
     return error
 }
 
-export { FormFields, Validator }
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+
+export { FormFields, Validator, getKeyByValue }

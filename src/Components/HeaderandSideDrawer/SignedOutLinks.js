@@ -17,7 +17,9 @@ const SignedOutLinks = (props) => {
                 props.history.push('registermedicalpractitioner');
             }}>Register as Medical Practitioner</Button>
             <span style={{ margin: "5px" }}>|</span>
-            <Button color="inherit">Register as Database Admin</Button>
+            <Button color="inherit" onClick={() => {
+                props.history.push('registerdatabaseadmin');
+            }}>Register as Database Admin</Button>
         </Box>
     )
 }

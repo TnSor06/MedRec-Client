@@ -13,6 +13,8 @@ import { connect } from 'react-redux'
 import { fetchRegion, fetchCountry } from '../../Store/Action/fetchAction';
 
 import { FormFields, Validator } from "../Utils/Misc"
+import { registerPatient } from '../../Store/Action/registerAction';
+import { CircularProgress } from '@material-ui/core';
 
 function getSteps() {
     return ['Patient Info', 'Medical Details'];
@@ -22,6 +24,8 @@ class RegisterPatient extends React.Component {
     state = {
         activeStep: 0,
         formError: false,
+        formErrorMsg: '',
+        loading: false,
         formSuccess: '',
         formData: {
             firstName: {
@@ -313,6 +317,7 @@ class RegisterPatient extends React.Component {
             country: {
                 element: 'fetch',
                 value: '',
+                valueSelect: '',
                 config: {
                     name: 'country_input',
                     type: 'text',
@@ -330,6 +335,7 @@ class RegisterPatient extends React.Component {
             region: {
                 element: 'fetch',
                 value: '',
+                valueSelect: '',
                 config: {
                     name: 'region_input',
                     type: 'text',
@@ -593,7 +599,31 @@ class RegisterPatient extends React.Component {
                 }
             )
         }
-
+        if (this.props.registerPatientDetails !== prevProps.registerPatientDetails) {
+            const updateState = {
+                ...this.state
+            }
+            updateState.formSuccess = this.props.registerPatientDetails !== null ? this.props.registerPatientDetails.registerPatient : null
+            updateState.loading = this.props.registerPatientDetails !== null ? false : true
+            this.setState(
+                {
+                    ...updateState
+                }
+            )
+        }
+        if (this.props.registerPatientError !== prevProps.registerPatientError) {
+            const updateState = {
+                ...this.state
+            }
+            updateState.formError = this.props.registerPatientError !== null ? true : false
+            updateState.formErrorMsg = this.props.registerPatientError !== null ? this.props.registerPatientError : ''
+            updateState.loading = this.props.registerPatientError !== null ? false : true
+            this.setState(
+                {
+                    ...updateState
+                }
+            )
+        }
     }
     fetchForm = (element, fetchFn) => {
         const newFormData = {
@@ -646,12 +676,26 @@ class RegisterPatient extends React.Component {
         let dataToSubmit = {}
         let formValidCheck = true
         for (let key in this.state.formData) {
-            dataToSubmit[key] = this.state.formData[key].value
-            formValidCheck = this.state.formData[key].valid && formValidCheck
+            if (this.state.formData[key].element === "fetch") {
+                dataToSubmit[key] = this.state.formData[key].valueSelect
+            } else {
+                if (this.state.formData[key].validation.required === true) {
+                    dataToSubmit[key] = this.state.formData[key].value
+                    formValidCheck = this.state.formData[key].valid && formValidCheck
+                } else {
+                    dataToSubmit[key] = this.state.formData[key].value === '' ? null : this.state.formData[key].value
+                }
+            }
         }
         if (formValidCheck) {
-            // props.logIn(dataToSubmit)
-            console.log(dataToSubmit)
+            if (dataToSubmit["password"] === dataToSubmit["repassword"]) {
+                delete dataToSubmit['repassword'];
+                this.props.registerPatient(dataToSubmit)
+                this.setState({
+                    ...this.state,
+                    loading: true
+                })
+            }
         }
         else {
             this.setState({
@@ -757,11 +801,12 @@ class RegisterPatient extends React.Component {
                                             id={'country'}
                                             formdata={this.state.formData.country}
                                             onChangeForm={(element) => this.fetchForm(element, this.props.fetchCountry)}
-                                            onSelectValue={(value) => {
+                                            onSelectValue={(value, valueSelect) => {
                                                 const newFormData = {
                                                     ...this.state.formData
                                                 }
                                                 newFormData.country.value = value
+                                                newFormData.country.valueSelect = valueSelect
                                                 this.setState({
                                                     ...this.state,
                                                     newFormData
@@ -777,11 +822,12 @@ class RegisterPatient extends React.Component {
                                             id={'region'}
                                             formdata={this.state.formData.region}
                                             onChangeForm={(element) => this.fetchForm(element, this.props.fetchRegion)}
-                                            onSelectValue={(value) => {
+                                            onSelectValue={(value, valueSelect) => {
                                                 const newFormData = {
                                                     ...this.state.formData
                                                 }
                                                 newFormData.region.value = value
+                                                newFormData.region.valueSelect = valueSelect
                                                 this.setState({
                                                     ...this.state,
                                                     newFormData
@@ -987,8 +1033,8 @@ class RegisterPatient extends React.Component {
                 }}>
                     {this.state.activeStep === steps.length ? (
                         <div>
-                            <Typography >All steps completed</Typography>
-                            <Button onClick={this.handleReset}>Reset</Button>
+                            {this.state.loading ? <CircularProgress></CircularProgress> : ''}
+                            <Typography >{this.state.formSuccess}</Typography>
                         </div>
                     ) : (
                             <div>
@@ -1002,7 +1048,7 @@ class RegisterPatient extends React.Component {
                                             margin: "10px 0",
                                             width: "100%"
                                         }}>
-                                            Something is wrong
+                                            {this.state.formErrorMsg !== '' ? this.state.formErrorMsg : "Something is wrong"}
                                         </Box> : null
                                 }
                                 <div style={{
@@ -1010,28 +1056,46 @@ class RegisterPatient extends React.Component {
                                     textAlign: "center",
                                     marginTop: "40px"
                                 }}>
-                                    <Button
-                                        disabled={this.state.activeStep === 0}
-                                        onClick={this.handleBack}
-                                        style={{
-                                            margin: "0 10px"
-                                        }}
-                                    >
-                                        Back
-              </Button>
-                                    <Button
-                                        type={this.state.activeStep === steps.length - 1 ? 'submit' : ''}
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(event) => {
-                                            this.state.activeStep === steps.length - 1 ? this.submitForm(event) : this.handleNext()
-                                        }}
-                                        style={{
-                                            margin: "0 10px"
-                                        }}>
-                                        {this.state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                    </Button>
+                                    {
+                                        this.state.formSuccess ? '' :
+                                            <Button
+                                                disabled={this.state.activeStep === 0 || this.state.activeStep === steps.length - 1}
+                                                onClick={this.handleBack}
+                                                style={{
+                                                    margin: "0 10px"
+                                                }}
+                                            >
+                                                Back
+                                        </Button>
+                                    }
+                                    {
+                                        this.state.loading ? <CircularProgress></CircularProgress> : <Button
+                                            type={this.state.activeStep === steps.length - 1 ? 'submit' : 'button'}
+                                            variant="contained"
+                                            color="primary"
+                                            disabled={this.state.formSuccess ? true : false}
+                                            onClick={(event) => {
+                                                this.state.activeStep === steps.length - 1 ? this.submitForm(event) : this.handleNext()
+                                            }}
+                                            style={{
+                                                margin: "0 10px"
+                                            }}>
+                                            {this.state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                        </Button>
+                                    }
                                 </div>
+                                {
+                                    this.state.formSuccess ?
+                                        <Box component="div" style={{
+                                            textAlign: "center",
+                                            fontSize: "16px",
+                                            color: "#24e53e",
+                                            margin: "10px 0",
+                                            width: "100%"
+                                        }}>
+                                            {this.state.formSuccess}
+                                        </Box> : null
+                                }
                             </div>
                         )}
                 </div>
@@ -1045,7 +1109,9 @@ const mapStateToProps = (state) => {
         fetchCountryDetails: state.fetch.fetchCountryDetails,
         fetchCountryError: state.fetch.fetchCountryError,
         fetchRegionDetails: state.fetch.fetchRegionDetails,
-        fetchRegionError: state.fetch.fetchRegionError
+        fetchRegionError: state.fetch.fetchRegionError,
+        registerPatientDetails: state.register.registerPatientDetails,
+        registerPatientError: state.register.registerPatientError
     }
 }
 
@@ -1056,8 +1122,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchCountry: (data) => {
             dispatch(fetchCountry(data))
+        },
+        registerPatient: (data) => {
+            dispatch(registerPatient(data))
         }
-
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterPatient)

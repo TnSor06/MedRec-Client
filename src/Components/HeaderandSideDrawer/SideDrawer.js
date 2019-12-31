@@ -2,20 +2,23 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
-import { Redirect } from 'react-router-dom'
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import UpdateIcon from '@material-ui/icons/Update';
+import PersonIcon from '@material-ui/icons/Person';
 import Avatar from '@material-ui/core/Avatar';
 import { deepOrange, deepPurple, lightGreen } from '@material-ui/core/colors';
 import { CircularProgress } from '@material-ui/core';
 
+import { withRouter } from 'react-router-dom'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+
 import { meNav } from "../../Store/Action/meAction"
 import { logOut } from '../../Store/Action/authAction'
 
@@ -50,9 +53,13 @@ function SideDrawer(props) {
       props.meNav(props.authDetails.login)
     }
   }
+
   const profile = () => {
     if (props.authDetails.login.user.role === "Patient") {
       const data = props.meNavDetails.mePatient
+      if (data === undefined) {
+        props.history.push('login')
+      }
       return (
         <ListItem alignItems="flex-start">
           <ListItemAvatar>
@@ -80,6 +87,9 @@ function SideDrawer(props) {
         </ListItem>)
     } else if (props.authDetails.login.user.role === "MedicalPractitioner") {
       const data = props.meNavDetails.meMedicalPractitioner
+      if (data === undefined) {
+        props.history.push('login')
+      }
       return (
         <ListItem alignItems="flex-start">
           <ListItemAvatar>
@@ -107,6 +117,9 @@ function SideDrawer(props) {
         </ListItem>)
     } else if (props.authDetails.login.user.role === "DatabaseAdmin") {
       const data = props.meNavDetails.meDatabaseAdmin
+      if (data === undefined) {
+        props.history.push('login')
+      }
       return (
         <ListItem alignItems="flex-start">
           <ListItemAvatar>
@@ -151,10 +164,12 @@ function SideDrawer(props) {
       </List>
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+        {[{ text: 'View Profile', status: 'viewprofile' }, { text: 'Update Profile', status: 'updateprofile' }].map((data, index) => (
+          <ListItem button key={data.text} onClick={() => {
+            props.history.push(`${data.status}`)
+          }}>
+            <ListItemIcon>{index % 2 === 0 ? <PersonIcon /> : <UpdateIcon />}</ListItemIcon>
+            <ListItemText primary={data.text} />
           </ListItem>
         ))}
       </List>
@@ -162,7 +177,6 @@ function SideDrawer(props) {
       <List>
         {['All mail', 'Trash', 'Spam'].map((text, index) => (
           <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -198,4 +212,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SideDrawer)
+export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(SideDrawer)

@@ -36,8 +36,8 @@ const fetchReducer = (state = initState, action) => {
         case "FETCHHOSPITAL_ERROR":
             return {
                 ...state,
-                fetchCountryDetails: null,
-                fetchCountryError: action.err
+                fetchHospitalDetails: null,
+                fetchHospitalError: action.err
             }
         case "FETCHHOSPITAL_SUCCESS":
             return {

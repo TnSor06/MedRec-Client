@@ -13,6 +13,8 @@ import { connect } from 'react-redux'
 import { fetchHospital } from '../../Store/Action/fetchAction';
 
 import { FormFields, Validator } from "../Utils/Misc"
+import { registerMedicalPractitioner } from '../../Store/Action/registerAction';
+import { CircularProgress } from '@material-ui/core';
 
 function getSteps() {
     return ['User Info', 'Medical Practitioner Details'];
@@ -22,6 +24,8 @@ class RegisterMedicalPractitioner extends React.Component {
     state = {
         activeStep: 0,
         formError: false,
+        formErrorMsg: '',
+        loading: false,
         formSuccess: '',
         formData: {
             firstName: {
@@ -215,6 +219,7 @@ class RegisterMedicalPractitioner extends React.Component {
             hospital: {
                 element: 'fetch',
                 value: '',
+                valueSelect: '',
                 config: {
                     name: 'hospital_input',
                     type: 'text',
@@ -258,6 +263,31 @@ class RegisterMedicalPractitioner extends React.Component {
             )
         }
 
+        if (this.props.registerMedicalPractitionerDetails !== prevProps.registerMedicalPractitionerDetails) {
+            const updateState = {
+                ...this.state
+            }
+            updateState.formSuccess = this.props.registerMedicalPractitionerDetails !== null ? this.props.registerMedicalPractitionerDetails.registerMedicalPractitioner : null
+            updateState.loading = this.props.registerMedicalPractitionerDetails !== null ? false : true
+            this.setState(
+                {
+                    ...updateState
+                }
+            )
+        }
+        if (this.props.registerMedicalPractitionerError !== prevProps.registerMedicalPractitionerError) {
+            const updateState = {
+                ...this.state
+            }
+            updateState.formError = this.props.registerPatientError !== null ? true : false
+            updateState.formErrorMsg = this.props.registerPatientError !== null ? this.props.registerPatientError : ''
+            updateState.loading = this.props.registerPatientError !== null ? false : true
+            this.setState(
+                {
+                    ...updateState
+                }
+            )
+        }
     }
     fetchForm = (element, fetchFn) => {
         const newFormData = {
@@ -310,12 +340,26 @@ class RegisterMedicalPractitioner extends React.Component {
         let dataToSubmit = {}
         let formValidCheck = true
         for (let key in this.state.formData) {
-            dataToSubmit[key] = this.state.formData[key].value
-            formValidCheck = this.state.formData[key].valid && formValidCheck
+            if (this.state.formData[key].element === "fetch") {
+                dataToSubmit[key] = this.state.formData[key].valueSelect
+            } else {
+                if (this.state.formData[key].validation.required === true) {
+                    dataToSubmit[key] = this.state.formData[key].value
+                    formValidCheck = this.state.formData[key].valid && formValidCheck
+                } else {
+                    dataToSubmit[key] = this.state.formData[key].value === '' ? null : this.state.formData[key].value
+                }
+            }
         }
         if (formValidCheck) {
-            // props.logIn(dataToSubmit)
-            console.log(dataToSubmit)
+            if (dataToSubmit["password"] === dataToSubmit["repassword"]) {
+                delete dataToSubmit['repassword'];
+                this.props.registerMedicalPractitioner(dataToSubmit)
+                this.setState({
+                    ...this.state,
+                    loading: true
+                })
+            }
         }
         else {
             this.setState({
@@ -416,21 +460,21 @@ class RegisterMedicalPractitioner extends React.Component {
                             </Typography>
                             <form onSubmit={(event) => this.submitForm(event)}>
                                 <Grid container spacing={3}>
-                                    <Grid item xs={12} md={3}>
+                                    <Grid item xs={12} md={4}>
                                         <FormFields
                                             id={'clinicAddress'}
                                             formdata={this.state.formData.clinicAddress}
                                             onChangeForm={(element) => this.updateForm(element)}
                                         ></FormFields>
                                     </Grid>
-                                    <Grid item xs={12} md={6}>
+                                    <Grid item xs={12} md={4}>
                                         <FormFields
                                             id={'degree'}
                                             formdata={this.state.formData.degree}
                                             onChangeForm={(element) => this.updateForm(element)}
                                         ></FormFields>
                                     </Grid>
-                                    <Grid item xs={12} md={6}>
+                                    <Grid item xs={12} md={4}>
                                         <FormFields
                                             id={'field'}
                                             formdata={this.state.formData.field}
@@ -444,11 +488,12 @@ class RegisterMedicalPractitioner extends React.Component {
                                             id={'hospital'}
                                             formdata={this.state.formData.hospital}
                                             onChangeForm={(element) => this.fetchForm(element, this.props.fetchHospital)}
-                                            onSelectValue={(value) => {
+                                            onSelectValue={(value, valueSelect) => {
                                                 const newFormData = {
                                                     ...this.state.formData
                                                 }
-                                                newFormData.country.value = value
+                                                newFormData.hospital.value = value
+                                                newFormData.hospital.valueSelect = valueSelect
                                                 this.setState({
                                                     ...this.state,
                                                     newFormData
@@ -513,8 +558,8 @@ class RegisterMedicalPractitioner extends React.Component {
                 }}>
                     {this.state.activeStep === steps.length ? (
                         <div>
-                            <Typography >All steps completed</Typography>
-                            <Button onClick={this.handleReset}>Reset</Button>
+                            {this.state.loading ? <CircularProgress></CircularProgress> : ''}
+                            <Typography >{this.state.formSuccess}</Typography>
                         </div>
                     ) : (
                             <div>
@@ -528,7 +573,7 @@ class RegisterMedicalPractitioner extends React.Component {
                                             margin: "10px 0",
                                             width: "100%"
                                         }}>
-                                            Something is wrong
+                                            {this.state.formErrorMsg !== '' ? this.state.formErrorMsg : "Something is wrong"}
                                         </Box> : null
                                 }
                                 <div style={{
@@ -536,28 +581,46 @@ class RegisterMedicalPractitioner extends React.Component {
                                     textAlign: "center",
                                     marginTop: "40px"
                                 }}>
-                                    <Button
-                                        disabled={this.state.activeStep === 0}
-                                        onClick={this.handleBack}
-                                        style={{
-                                            margin: "0 10px"
-                                        }}
-                                    >
-                                        Back
-              </Button>
-                                    <Button
-                                        type={this.state.activeStep === steps.length - 1 ? 'submit' : ''}
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(event) => {
-                                            this.state.activeStep === steps.length - 1 ? this.submitForm(event) : this.handleNext()
-                                        }}
-                                        style={{
-                                            margin: "0 10px"
-                                        }}>
-                                        {this.state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                    </Button>
+                                    {
+                                        this.state.formSuccess ? '' :
+                                            <Button
+                                                disabled={this.state.activeStep === 0 || this.state.activeStep === steps.length - 1}
+                                                onClick={this.handleBack}
+                                                style={{
+                                                    margin: "0 10px"
+                                                }}
+                                            >
+                                                Back
+                                        </Button>
+                                    }
+                                    {
+                                        this.state.loading ? <CircularProgress></CircularProgress> : <Button
+                                            type={this.state.activeStep === steps.length - 1 ? 'submit' : 'button'}
+                                            variant="contained"
+                                            color="primary"
+                                            disabled={this.state.formSuccess ? true : false}
+                                            onClick={(event) => {
+                                                this.state.activeStep === steps.length - 1 ? this.submitForm(event) : this.handleNext()
+                                            }}
+                                            style={{
+                                                margin: "0 10px"
+                                            }}>
+                                            {this.state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                        </Button>
+                                    }
                                 </div>
+                                {
+                                    this.state.formSuccess ?
+                                        <Box component="div" style={{
+                                            textAlign: "center",
+                                            fontSize: "16px",
+                                            color: "#24e53e",
+                                            margin: "10px 0",
+                                            width: "100%"
+                                        }}>
+                                            {this.state.formSuccess}
+                                        </Box> : null
+                                }
                             </div>
                         )}
                 </div>
@@ -565,11 +628,12 @@ class RegisterMedicalPractitioner extends React.Component {
         );
     }
 }
-
 const mapStateToProps = (state) => {
     return {
         fetchHospitalDetails: state.fetch.fetchHospitalDetails,
         fetchHospitalError: state.fetch.fetchHospitalError,
+        registerMedicalPractitionerDetails: state.register.registerMedicalPractitionerDetails,
+        registerMedicalPractitionerError: state.register.registerMedicalPractitionerError
     }
 }
 
@@ -578,6 +642,9 @@ const mapDispatchToProps = (dispatch) => {
         fetchHospital: data => {
             dispatch(fetchHospital(data))
         },
+        registerMedicalPractitioner: (data) => {
+            dispatch(registerMedicalPractitioner(data))
+        }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterMedicalPractitioner)
