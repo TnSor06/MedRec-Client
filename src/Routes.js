@@ -11,6 +11,8 @@ import RegisterDatabaseAdmin from './Components/LoginAndSignUp/RegisterDatabaseA
 import ViewHandler from './Components/Dashboard/ViewHandler';
 import UpdateHandler from './Components/Dashboard/UpdateHandler';
 import SearchHandler from './Components/Dashboard/SearchHandler';
+import MedicalPractitionerHandler from './Components/Dashboard/MedicalPractitionerHandler';
+import PatientHandler from './Components/Dashboard/PatientHandler';
 
 const Routes = (props) => {
     return (
@@ -23,6 +25,8 @@ const Routes = (props) => {
                     <Route exact path="/registerdatabaseadmin" component={RegisterDatabaseAdmin} />
                     <Route exact path="/viewprofile" component={ViewHandler} />
                     <Route exact path="/updateprofile" component={UpdateHandler} />
+                    <Route exact path="/medicalpractitioner/:id" component={MedicalPractitionerHandler} />
+                    <Route exact path="/patient/:id" component={PatientHandler} />
                     <Route exact path="/search" component={SearchHandler} />
                     <Route exact path="/" component={Dashboard} />
                 </Switch>

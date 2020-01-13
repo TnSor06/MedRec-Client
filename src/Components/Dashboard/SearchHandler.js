@@ -82,7 +82,6 @@ class SearchHandler extends Component {
                     loading: false,
                     result: this.props.searchUserDetails.searchUser
                 })
-                console.log(prevProps, this.props, this.state)
             }
         } else if (this.props.searchUserDetails !== null && this.state.loading === true) {
             this.setState({

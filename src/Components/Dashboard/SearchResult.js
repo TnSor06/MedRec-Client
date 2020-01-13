@@ -58,7 +58,6 @@ function SearchResult(props) {
             )
         }
     }
-    console.log(props)
     return (
         <Card className={classes.card}>
             <CardContent>
@@ -78,8 +77,7 @@ function SearchResult(props) {
             </CardContent>
             <CardActions>
                 <Button size="small" onClick={() => {
-                    const link = `${props.data.role.toLowerCase()}?id=${props.data.id}`
-                    console.log(link)
+                    const link = `${props.data.role.toLowerCase()}/${props.data.id}`
                     props.history.push(link)
                 }}>View Profile</Button>
             </CardActions>
