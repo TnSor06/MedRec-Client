@@ -28,11 +28,16 @@ const LoginContainer = (props) => {
         setCurrentUser(user);
       }}
       onError={(err) => {
-        setErr(
-          err.graphQLErrors.map((error) => {
-            return error.message;
-          })
-        );
+        if (err.graphQLErrors) {
+          setErr(
+            err.graphQLErrors.map((error) => {
+              return error.message;
+            })
+          );
+        }
+        if (err.networkError) {
+          setErr(err.networkError.message);
+        }
       }}
     >
       {(login, { loading }) => {

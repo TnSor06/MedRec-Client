@@ -41,11 +41,16 @@ const DetailsContainer = (props) => {
     <Query
       query={query}
       onError={(err) => {
-        setErr(
-          err.graphQLErrors.map((error) => {
-            return error.message;
-          })
-        );
+        if (err.graphQLErrors) {
+          setErr(
+            err.graphQLErrors.map((error) => {
+              return error.message;
+            })
+          );
+        }
+        if (err.networkError) {
+          setErr(err.networkError.message);
+        }
       }}
     >
       {({ loading, errors, data }) => {

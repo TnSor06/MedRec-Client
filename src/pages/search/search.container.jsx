@@ -15,6 +15,7 @@ const SearchContainer = (props) => {
       searchUser(data: { ${name ? "name: $name" : ""}, ${
     email ? "email: $email" : ""
   }, ${type ? "type:$type" : ""} }) {
+        id
         firstName
         middleName
         lastName
@@ -44,7 +45,7 @@ const SearchContainer = (props) => {
           );
         }
         if (err.networkError) {
-          setErr(err.networkError);
+          setErr(err.networkError.message);
         }
       }}
     >

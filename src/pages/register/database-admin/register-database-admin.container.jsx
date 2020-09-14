@@ -9,11 +9,16 @@ const RegisterDatabaseAdminContainer = (props) => {
     <Mutation
       mutation={REGISTER_DATABASE_ADMIN}
       onError={(err) => {
-        setErr(
-          err.graphQLErrors.map((error) => {
-            return error.message;
-          })
-        );
+        if (err.graphQLErrors) {
+          setErr(
+            err.graphQLErrors.map((error) => {
+              return error.message;
+            })
+          );
+        }
+        if (err.networkError) {
+          setErr(err.networkError.message);
+        }
       }}
     >
       {(registerDatabaseAdmin, { loading, error, data }) => {

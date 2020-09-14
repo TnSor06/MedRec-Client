@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const Search = (props) => {
   const {
     email,
@@ -12,9 +12,8 @@ const Search = (props) => {
     loading,
     users,
   } = props;
-  console.log(users);
   return (
-    <section className="hero is-small is-light is-bold">
+    <section className="hero is-small is-light">
       <div className="hero-body">
         <div className="container has-text-centered">
           <h1 className="title">Search User</h1>
@@ -87,6 +86,58 @@ const Search = (props) => {
               </div>
             </div>
           </div>
+        </div>
+        <hr
+          className="navbar-divider"
+          style={{ backgroundColor: "#363636" }}
+        ></hr>
+        <div className="container">
+          {users.map((user, key) => {
+            return (
+              <article
+                key={key}
+                className="media"
+                style={{
+                  border: "1px solid #dbdbdb",
+                  padding: "10px",
+                  borderRadius: "10px",
+                }}
+              >
+                <div className="media-content">
+                  <div className="content">
+                    <p>
+                      <strong>
+                        {user.firstName} {user.middleName} {user.lastName}
+                      </strong>{" "}
+                      <small>{user.email}</small>
+                      <br />
+                      {user.verified ? (
+                        <i
+                          className="fa fa-check-circle"
+                          aria-hidden="true"
+                        ></i>
+                      ) : (
+                        <i
+                          className="fa fa-times-circle"
+                          aria-hidden="true"
+                        ></i>
+                      )}
+                      &nbsp;
+                      {user.role}
+                    </p>
+                  </div>
+                </div>
+                <div className="media-right">
+                  <Link
+                    to={`${user.role.toLowerCase()}/${user.id}`}
+                    className="button is-success"
+                  >
+                    View Profile
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

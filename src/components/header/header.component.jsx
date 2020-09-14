@@ -20,7 +20,11 @@ const Header = (props) => {
     : null;
   const { currentUser } = useContext(CurrentUserContext);
   return (
-    <nav className="navbar" role="navigation" aria-label="main navigation">
+    <nav
+      className="navbar is-dark"
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div className="navbar-brand">
         <Link className="navbar-item" to="/">
           Medrec
@@ -80,7 +84,12 @@ const Header = (props) => {
         )}
         <div className="navbar-end">
           {networkError ? (
-            <div className="notification is-danger">{networkError.message}</div>
+            <div
+              className="navbar-item notification is-danger"
+              style={{ margin: "0 auto" }}
+            >
+              It seems like server is taking a nap
+            </div>
           ) : null}
           {currentUser ? (
             <div className="navbar-item has-dropdown is-hoverable">
@@ -96,6 +105,12 @@ const Header = (props) => {
                   &nbsp;
                   {currentUser.role}
                 </p>
+                <Link
+                  to={`/${currentUser.role.toLowerCase()}`}
+                  className="navbar-item"
+                >
+                  My Profile
+                </Link>
                 <hr className="navbar-divider"></hr>
                 <Link to={`/update`} className="navbar-item">
                   Update Details
@@ -103,6 +118,7 @@ const Header = (props) => {
                 <Link to={`/update/password`} className="navbar-item">
                   Update Password
                 </Link>
+                <hr className="navbar-divider"></hr>
                 <Link to="/logout" className="navbar-item">
                   Logout
                 </Link>

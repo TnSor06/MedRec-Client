@@ -9,11 +9,16 @@ const RegisterMedicalPractitionerContainer = (props) => {
     <Mutation
       mutation={REGISTER_MEDICAL_PRACTITIONER}
       onError={(err) => {
-        setErr(
-          err.graphQLErrors.map((error) => {
-            return error.message;
-          })
-        );
+        if (err.graphQLErrors) {
+          setErr(
+            err.graphQLErrors.map((error) => {
+              return error.message;
+            })
+          );
+        }
+        if (err.networkError) {
+          setErr(err.networkError.message);
+        }
       }}
     >
       {(registerMedicalPractitioner, { loading, error, data }) => {
