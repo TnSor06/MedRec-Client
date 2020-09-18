@@ -14,8 +14,10 @@ const InsuranceModify = (props) => {
   const [details, setDetails] = useState(
     editData ? editData.sponsorerDetails : ""
   );
+
   const onSubmit = () => {
     modify(status, company1, company2, details);
+    window.location.reload();
   };
   return (
     <section className="hero is-small is-light is-bold">

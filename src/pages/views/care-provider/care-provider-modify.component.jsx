@@ -13,6 +13,7 @@ const CareProviderModify = (props) => {
   );
   const onSubmit = () => {
     modify(patientId, relation);
+    window.location.reload();
   };
   return (
     <section className="hero is-small is-light is-bold">
@@ -100,7 +101,7 @@ const CareProviderModify = (props) => {
             {error ? <p className="notification is-danger">{error}</p> : null}
             {data ? (
               <p className="notification is-success">
-                {data[`${type}CareProvider`].id} added successfully!
+                {data[`${type}CareProvider`].id} {type}ed successfully!
               </p>
             ) : null}
           </div>

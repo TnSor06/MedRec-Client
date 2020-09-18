@@ -50,7 +50,6 @@ const CareProviderContainer = (props) => {
       }}
     >
       {({ loading, error, data }) => {
-        console.log(data);
         if (loading) {
           return <Spinner></Spinner>;
         }

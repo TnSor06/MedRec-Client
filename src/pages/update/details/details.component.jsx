@@ -7,6 +7,7 @@ const Details = (props) => {
   const [isValidContact, setValidContact] = useState(false);
   const onSubmit = () => {
     update(value1, value2);
+    window.location.reload();
   };
   return (
     <section className="hero is-small is-light is-bold">

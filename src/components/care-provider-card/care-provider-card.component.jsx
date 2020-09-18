@@ -27,7 +27,6 @@ const CareProviderCard = (props) => {
               </header>
               <div className="card-content">
                 <div className="content">
-                  <p className="title is-5">{data.id}</p>
                   <p className="subtitle is-6">
                     <strong>Care Provider Patient ID</strong>:{" "}
                     {data.cpPatientId.patientId}

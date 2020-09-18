@@ -10,10 +10,9 @@ import CareProviderCard from "../../../components/care-provider-card/care-provid
 
 const Patient = (props) => {
   const { currentUser } = useContext(CurrentUserContext);
-  const { loading, error, data, match } = props;
+  const { loading, error, data } = props;
   const registeredAt = data ? moment(data.registeredAt).fromNow() : null;
 
-  console.log(error, data);
   if (loading) {
     return <Spinner></Spinner>;
   }
@@ -128,7 +127,7 @@ const Patient = (props) => {
                         ? moment(eachCase.createdAt).fromNow()
                         : null;
                       return (
-                        <Link key={key} to={`${match.url}/${eachCase.caseId}`}>
+                        <Link key={key} to={`case/${eachCase.caseId}`}>
                           {eachCase.caseId}-{createdAt}
                         </Link>
                       );

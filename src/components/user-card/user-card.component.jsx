@@ -7,8 +7,6 @@ const UserCard = ({ user }) => {
       className="card"
       style={{
         position: "relative",
-        top: "50%",
-        transform: "translateY(-50%)",
       }}
     >
       <div className="card-content">

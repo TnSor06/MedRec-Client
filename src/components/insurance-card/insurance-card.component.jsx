@@ -27,7 +27,9 @@ const InsuranceCard = (props) => {
               </header>
               <div className="card-content">
                 <div className="content">
-                  <p className="title is-5">{data.insuranceId}</p>
+                  <p className="title is-5">
+                    <strong>Insurance ID</strong>: {data.insuranceId}
+                  </p>
                   <p className="subtitle is-6">
                     <strong>Status</strong>: {data.insuranceStatus}
                     <br />
