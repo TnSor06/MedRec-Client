@@ -13,7 +13,6 @@ const CareProviderModify = (props) => {
   );
   const onSubmit = () => {
     modify(patientId, relation);
-    window.location.reload();
   };
   return (
     <section className="hero is-small is-light is-bold">

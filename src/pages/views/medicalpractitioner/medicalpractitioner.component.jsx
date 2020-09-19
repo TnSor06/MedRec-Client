@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import moment from "moment";
-import { Spinner } from "../../../components/spinner/spinner.component";
 import { CurrentUserContext } from "../../../providers/currentUser.provider";
 import UserCard from "../../../components/user-card/user-card.component";
 import ApproveContainer from "../../../components/approve/approve.container";
@@ -8,11 +7,8 @@ import HospitalCard from "../../../components/hospital-card/hospital-card.compon
 
 const MedicalPractitioner = (props) => {
   const { currentUser } = useContext(CurrentUserContext);
-  const { loading, error, data } = props;
+  const { error, data } = props;
   const registeredAt = data ? moment(data.registeredAt).fromNow() : null;
-  if (loading) {
-    return <Spinner></Spinner>;
-  }
   return (
     <div>
       <section className="hero is-medium is-light is-bold">

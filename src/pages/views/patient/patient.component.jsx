@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { Spinner } from "../../../components/spinner/spinner.component";
 import UserCard from "../../../components/user-card/user-card.component";
 import { CurrentUserContext } from "../../../providers/currentUser.provider";
 import ApproveContainer from "../../../components/approve/approve.container";
@@ -10,12 +9,8 @@ import CareProviderCard from "../../../components/care-provider-card/care-provid
 
 const Patient = (props) => {
   const { currentUser } = useContext(CurrentUserContext);
-  const { loading, error, data } = props;
+  const { error, data } = props;
   const registeredAt = data ? moment(data.registeredAt).fromNow() : null;
-
-  if (loading) {
-    return <Spinner></Spinner>;
-  }
   return (
     <div>
       <section className="hero is-medium is-light is-bold">
@@ -99,18 +94,21 @@ const Patient = (props) => {
                         <p>
                           <strong>Immunization History</strong>:{" "}
                           {data.immunizationHistory} <br />
-                          <strong>Allergy Status</strong>: {data.allergyStatus}{" "}
-                          <br />
+                          <strong>Allergy Status</strong>:{" "}
+                          {data.allergyStatus ? "Yes" : "No"} <br />
                           <strong>Organ Donor Status</strong>:{" "}
-                          {data.organDonorStatus} <br />
+                          {data.organDonorStatus ? "Yes" : "No"} <br />
                           <strong>PMH</strong>: {data.PMH} <br />
                           <strong>DHx</strong>: {data.DHx} <br />
-                          <strong>Ca</strong>: {data.Ca} <br />
-                          <strong>IDDM</strong>: {data.IDDM} <br />
-                          <strong>NIDDM</strong>: {data.NIDDM} <br />
-                          <strong>COPD</strong>: {data.COPD} <br />
-                          <strong>MI</strong>: {data.MI} <br />
-                          <strong>AF</strong>: {data.AF} <br />
+                          <strong>Ca</strong>: {data.Ca ? "Yes" : "No"} <br />
+                          <strong>IDDM</strong>: {data.IDDM ? "Yes" : "No"}{" "}
+                          <br />
+                          <strong>NIDDM</strong>: {data.NIDDM ? "Yes" : "No"}{" "}
+                          <br />
+                          <strong>COPD</strong>: {data.COPD ? "Yes" : "No"}{" "}
+                          <br />
+                          <strong>MI</strong>: {data.MI ? "Yes" : "No"} <br />
+                          <strong>AF</strong>: {data.AF ? "Yes" : "No"} <br />
                         </p>
                       </div>
                     </div>
@@ -127,11 +125,34 @@ const Patient = (props) => {
                         ? moment(eachCase.createdAt).fromNow()
                         : null;
                       return (
-                        <Link key={key} to={`case/${eachCase.caseId}`}>
-                          {eachCase.caseId}-{createdAt}
-                        </Link>
+                        <div key={key}>
+                          {" "}
+                          <Link
+                            to={`/patient/${data.patientId}/patient-case/view/${eachCase.caseId}`}
+                          >
+                            {eachCase.caseId}-{createdAt}
+                          </Link>
+                        </div>
                       );
                     })}
+                    <div style={{ margin: "10px 0" }}>
+                      <Link
+                        className="button is-success"
+                        to={`/patient/${data.patientId}/patient-case`}
+                      >
+                        View Cases
+                      </Link>
+                    </div>
+                    <div style={{ margin: "10px 0" }}>
+                      {currentUser.role === "MedicalPractitioner" ? (
+                        <Link
+                          className="button is-success"
+                          to={`/patient/${data.patientId}/patient-case/create`}
+                        >
+                          Create Case
+                        </Link>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </div>

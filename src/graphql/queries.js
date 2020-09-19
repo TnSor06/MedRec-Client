@@ -56,3 +56,23 @@ export const GET_HOSPITAL = gql`
     }
   }
 `;
+
+export const GET_ICD_CODE = gql`
+  query GetIcdCode($commonName: String!) {
+    icdcodes(commonName: $commonName) {
+      id
+      icdCode
+      commonName
+    }
+  }
+`;
+
+export const GET_ICD_SUB_CODE = gql`
+  query GetIcdSubCode($commonName: String!, $scientificName: String) {
+    icdsubcodes(commonName: $commonName, scientificName: $scientificName) {
+      id
+      icdSubCode
+      scientificName
+    }
+  }
+`;

@@ -4,9 +4,9 @@ import GetCountry from "./get-country.component";
 import { GET_COUNTRY } from "../../graphql/queries";
 
 const GetCountryContainer = (props) => {
-  const [country, setCountry] = useState("");
   const [countries, setCountries] = useState([]);
   const { countryCode, setCountryCode } = props;
+  const [country, setCountry] = useState(props.country ? props.country : "");
   return (
     <Query
       query={GET_COUNTRY}

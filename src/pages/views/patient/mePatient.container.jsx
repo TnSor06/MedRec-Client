@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
 import Patient from "./patient.component";
+import { Spinner } from "../../../components/spinner/spinner.component";
 
 const MePatientContainer = (props) => {
   const [err, setErr] = useState("");
@@ -97,6 +98,10 @@ const MePatientContainer = (props) => {
       }}
     >
       {({ loading, error, data }) => {
+        if (loading) {
+          setErr("");
+          return <Spinner></Spinner>;
+        }
         return (
           <Patient
             {...props}

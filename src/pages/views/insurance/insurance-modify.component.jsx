@@ -17,7 +17,6 @@ const InsuranceModify = (props) => {
 
   const onSubmit = () => {
     modify(status, company1, company2, details);
-    window.location.reload();
   };
   return (
     <section className="hero is-small is-light is-bold">
@@ -137,7 +136,7 @@ const InsuranceModify = (props) => {
             {error ? <p className="notification is-danger">{error}</p> : null}
             {data ? (
               <p className="notification is-success">
-                {data[`${type}Insurance`].insuranceId} added successfully!
+                {data[`${type}Insurance`].insuranceId} {type}ed successfully!
               </p>
             ) : null}
           </div>

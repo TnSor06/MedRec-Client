@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
+import { Spinner } from "../../../components/spinner/spinner.component";
 import DatabaseAdmin from "./databaseadmin.component";
 
 const DatabaseAdminContainer = (props) => {
@@ -52,6 +53,10 @@ const DatabaseAdminContainer = (props) => {
           );
         } else if (error && error.networkError) {
           setErr(error.networkError.message);
+        }
+        if (loading) {
+          setErr("");
+          return <Spinner></Spinner>;
         }
         return (
           <DatabaseAdmin

@@ -4,7 +4,7 @@ const Details = (props) => {
   const { dataFromQuery, labels, error, loading, data, update } = props;
   const [value1, setValue1] = useState(dataFromQuery[labels[0].key]);
   const [value2, setValue2] = useState(dataFromQuery[labels[1].key]);
-  const [isValidContact, setValidContact] = useState(false);
+  const [isValidContact, setValidContact] = useState(true);
   const onSubmit = () => {
     update(value1, value2);
     window.location.reload();

@@ -9,8 +9,8 @@ import Details from "./details.component";
 const DetailsContainer = (props) => {
   const [err, setErr] = useState("");
   const { currentUser } = useContext(CurrentUserContext);
-  if (!currentUser && currentUser.role === "Patient") {
-    return <Redirect to="/"></Redirect>;
+  if (!currentUser || currentUser.role === "Patient") {
+    return <Redirect to="/update"></Redirect>;
   }
   const query = gql`
         {

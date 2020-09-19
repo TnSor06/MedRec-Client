@@ -4,9 +4,9 @@ import GetRegion from "./get-region.component";
 import { GET_REGION } from "../../graphql/queries";
 
 const GetRegionContainer = (props) => {
-  const [region, setRegion] = useState("");
   const [regions, setRegions] = useState([]);
   const { pincode, setPincode } = props;
+  const [region, setRegion] = useState(props.region ? props.region : "");
   return (
     <Query
       query={GET_REGION}

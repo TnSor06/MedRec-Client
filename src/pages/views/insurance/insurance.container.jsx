@@ -42,6 +42,7 @@ const InsuranceContainer = (props) => {
     >
       {({ loading, error, data }) => {
         if (loading) {
+          setErr("");
           return <Spinner></Spinner>;
         }
         return (

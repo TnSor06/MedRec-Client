@@ -9,6 +9,7 @@ const ChangePassword = (props) => {
   const { update, loading, error, data } = props;
   const onSubmit = () => {
     update(password);
+    window.location.reload();
   };
   return (
     <section className="hero is-small is-light is-bold">

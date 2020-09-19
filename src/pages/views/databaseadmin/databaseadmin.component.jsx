@@ -1,15 +1,12 @@
 import React from "react";
 import moment from "moment";
-import { Spinner } from "../../../components/spinner/spinner.component";
 import UserCard from "../../../components/user-card/user-card.component";
 import HospitalCard from "../../../components/hospital-card/hospital-card.component";
 
 const DatabaseAdmin = (props) => {
-  const { loading, error, data } = props;
+  const { error, data } = props;
   const registeredAt = data ? moment(data.registeredAt).fromNow() : null;
-  if (loading) {
-    return <Spinner></Spinner>;
-  }
+
   return (
     <div>
       <section className="hero is-medium is-light is-bold">
