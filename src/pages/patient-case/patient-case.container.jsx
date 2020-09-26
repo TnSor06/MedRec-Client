@@ -5,6 +5,7 @@ import CreateCaseContainer from "./create-case/create-case.container";
 import ViewCaseContainer from "./view-case/view-case.container";
 import { CurrentUserContext } from "../../providers/currentUser.provider";
 import PatientRecordContainer from "../patient-record/patient-record.container";
+import SharedRecordContainer from "../shared-record/shared-record.container";
 
 const PatientCaseContainer = (props) => {
   const { match } = props;
@@ -32,6 +33,10 @@ const PatientCaseContainer = (props) => {
       <Route
         path={`${match.path}/view/:case/patient-record`}
         component={PatientRecordContainer}
+      ></Route>
+      <Route
+        path={`${match.path}/view/:case/shared-record`}
+        component={SharedRecordContainer}
       ></Route>
     </Switch>
   );

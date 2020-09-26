@@ -10,7 +10,9 @@ import CareProviderCard from "../../../components/care-provider-card/care-provid
 const Patient = (props) => {
   const { currentUser } = useContext(CurrentUserContext);
   const { error, data } = props;
-  const registeredAt = data ? moment(data.registeredAt).fromNow() : null;
+  const registeredAt = data
+    ? moment(data.registeredAt).format("dddd, MMMM Do YYYY, h:mm:ss a")
+    : null;
   return (
     <div>
       <section className="hero is-medium is-light is-bold">

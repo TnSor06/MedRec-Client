@@ -3,8 +3,14 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import HL7 from "../../../components/hl7/hl7.component";
 
-const CreateSharedCase = (props) => {
-  const { loading, error, data, create, match } = props;
+const CreateSharedRecord = (props) => {
+  const {
+    loading,
+    error,
+    data,
+    create,
+    match: { params },
+  } = props;
   const [receiver, setReceiver] = useState("");
   const onSubmit = () => {
     create(receiver);
@@ -13,7 +19,7 @@ const CreateSharedCase = (props) => {
     <section className="hero is-medium is-light is-bold">
       <div className="hero-body">
         <div className="container has-text-centered">
-          <h1 className="title">Create Shared Patient Case</h1>
+          <h1 className="title">Create Shared Patient Record</h1>
         </div>
         <div className="columns is-centered" style={{ margin: "10px 0" }}>
           <div className="column is-one-third-desktop">
@@ -51,7 +57,7 @@ const CreateSharedCase = (props) => {
 
             <div className="help has-text-centered is-size-5 is-success">
               <h1 className="help has-text-centered is-size-5 is-success">
-                {data ? `Shared Case create successfully` : ""}
+                {data ? `Shared Record create successfully` : ""}
               </h1>
             </div>
             <p className="help has-text-centered is-size-5 is-danger">
@@ -71,34 +77,46 @@ const CreateSharedCase = (props) => {
             <div className="media-content">
               <div className="content">
                 <p>
+                  <strong>Record Id: </strong>
+                  <Link
+                    to={`/patient/${params.id}/patient-case/view/${params.case}/patient-record/view/${params.record}`}
+                  >
+                    {data.createSharedRecord.record.recordId}
+                  </Link>
+                  .{" "}
+                  <small>
+                    <strong>Visit No.:</strong>{" "}
+                    {data.createSharedRecord.record.visitNo}
+                  </small>
+                  <br />
+                  Created At:{" "}
+                  {moment(data.createSharedRecord.record.createdAt).format(
+                    "dddd, MMMM Do YYYY, h:mm:ss a"
+                  )}
+                  <br />
                   <strong>Case Id: </strong>
                   <Link
-                    to={`${match.url
-                      .replace(
-                        "shared-case/",
-                        `patient-case/view/${data.createSharedCase.case.caseId}`
-                      )
-                      .replace("create", "")}`}
+                    to={`/patient/${params.id}/patient-case/view/${params.case}`}
                   >
-                    {data.createSharedCase.case.caseId}
+                    {data.createSharedRecord.case.caseId}
                   </Link>
                   .{" "}
                   <small>
                     <strong>No. of Visits:</strong>{" "}
-                    {data.createSharedCase.case.noOfVisits}
+                    {data.createSharedRecord.case.noOfVisits}
                   </small>
                   <br />
                   <strong>Details: </strong>
-                  {data.createSharedCase.case.icdCode.commonName} -{" "}
-                  {data.createSharedCase.case.icdSubCode.scientificName}
+                  {data.createSharedRecord.case.icdCode.commonName} -{" "}
+                  {data.createSharedRecord.case.icdSubCode.scientificName}
                   <br />
                   Created At:{" "}
-                  {moment(data.createSharedCase.case.createdAt).format(
+                  {moment(data.createSharedRecord.case.createdAt).format(
                     "dddd, MMMM Do YYYY, h:mm:ss a"
                   )}
                   <br />
                   Last Updated At:{" "}
-                  {moment(data.createSharedCase.case.updatedAt).format(
+                  {moment(data.createSharedRecord.case.updatedAt).format(
                     "dddd, MMMM Do YYYY, h:mm:ss a"
                   )}
                   <br />
@@ -106,31 +124,31 @@ const CreateSharedCase = (props) => {
                 </p>
                 <p>
                   <strong>Sender: </strong>
-                  {data.createSharedCase.sender.user.firstName}{" "}
-                  {data.createSharedCase.sender.user.lastName}.{" "}
+                  {data.createSharedRecord.sender.user.firstName}{" "}
+                  {data.createSharedRecord.sender.user.lastName}.{" "}
                   <small>
                     &nbsp;<strong>MpID:</strong>{" "}
                     <Link
-                      to={`/medicalpractitioner/${data.createSharedCase.sender.mpId}`}
+                      to={`/medicalpractitioner/${data.createSharedRecord.sender.mpId}`}
                     >
-                      {data.createSharedCase.sender.mpId}
+                      {data.createSharedRecord.sender.mpId}
                     </Link>
                   </small>
                   <br />
                   <strong>Receiver: </strong>
-                  {data.createSharedCase.receiver.user.firstName}{" "}
-                  {data.createSharedCase.receiver.user.lastName}.{" "}
+                  {data.createSharedRecord.receiver.user.firstName}{" "}
+                  {data.createSharedRecord.receiver.user.lastName}.{" "}
                   <small>
                     &nbsp;<strong>MpID:</strong>{" "}
                     <Link
-                      to={`/medicalpractitioner/${data.createSharedCase.receiver.mpId}`}
+                      to={`/medicalpractitioner/${data.createSharedRecord.receiver.mpId}`}
                     >
-                      {data.createSharedCase.receiver.mpId}
+                      {data.createSharedRecord.receiver.mpId}
                     </Link>
                   </small>
                   <br />
                   Shared At:{" "}
-                  {moment(data.createSharedCase.sharedAt).format(
+                  {moment(data.createSharedRecord.sharedAt).format(
                     "dddd, MMMM Do YYYY, h:mm:ss a"
                   )}
                   <br />
@@ -140,8 +158,8 @@ const CreateSharedCase = (props) => {
             </div>
             <div className="media-right">
               <HL7
-                HL7={data.createSharedCase.HL7}
-                caseId={data.createSharedCase.case.caseId}
+                HL7={data.createSharedRecord.HL7}
+                caseId={data.createSharedRecord.case.caseId}
               ></HL7>
             </div>
           </article>
@@ -151,4 +169,4 @@ const CreateSharedCase = (props) => {
   );
 };
 
-export default CreateSharedCase;
+export default CreateSharedRecord;

@@ -131,12 +131,12 @@ const SearchSharedCase = (props) => {
                       <br />
                       Created At:{" "}
                       {moment(eachCase.case.createdAt).format(
-                        "MMMM Do YYYY, h:mm:ss a"
+                        "dddd, MMMM Do YYYY, h:mm:ss a"
                       )}
                       <br />
                       Last Updated At:{" "}
                       {moment(eachCase.case.updatedAt).format(
-                        "MMMM Do YYYY, h:mm:ss a"
+                        "dddd, MMMM Do YYYY, h:mm:ss a"
                       )}
                       <br />
                       &nbsp;
@@ -168,7 +168,7 @@ const SearchSharedCase = (props) => {
                       <br />
                       Shared At:{" "}
                       {moment(eachCase.sharedAt).format(
-                        "MMMM Do YYYY, h:mm:ss a"
+                        "dddd, MMMM Do YYYY, h:mm:ss a"
                       )}
                       <br />
                       &nbsp;

@@ -1,32 +1,28 @@
 import React, { useContext } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import UserCard from "../../../components/user-card/user-card.component";
 import HospitalCard from "../../../components/hospital-card/hospital-card.component";
+import UserCard from "../../../components/user-card/user-card.component";
 import { CurrentUserContext } from "../../../providers/currentUser.provider";
 
-const ViewCase = (props) => {
+const ViewRecord = (props) => {
   const { error, data } = props;
   const { currentUser } = useContext(CurrentUserContext);
-  const createdAt = data
-    ? moment(data.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a")
-    : null;
-  const updatedAt = data
-    ? moment(data.updatedAt).format("dddd, MMMM Do YYYY, h:mm:ss a")
-    : null;
+  const {
+    match: { params },
+  } = props;
   const registeredAt = data
     ? moment(data.medicalPractitioner.registeredAt).format(
         "dddd, MMMM Do YYYY, h:mm:ss a"
       )
     : null;
-  const { params } = props.match;
   return (
     <div>
       <section className="hero is-medium is-light is-bold">
         <div className="hero-body">
           <div className="container">
             <div className="has-text-centered">
-              <h1 className="title">Patient Case</h1>
+              <h1 className="title">Patient Record</h1>
             </div>
           </div>
           <p className="help is-size-5 is-danger">{error ? error : ""}</p>
@@ -36,9 +32,9 @@ const ViewCase = (props) => {
                 {currentUser.role === "MedicalPractitioner" ? (
                   <Link
                     className="button is-success"
-                    to={`/patient/${params.id}/shared-case/${params.case}/create`}
+                    to={`/patient/${params.id}/patient-case/view/${params.case}/shared-record/${params.record}/create`}
                   >
-                    Share Case
+                    Share Record
                   </Link>
                 ) : null}
               </div>
@@ -48,16 +44,19 @@ const ViewCase = (props) => {
                     <div className="media-content">
                       <div className="content" style={{ padding: "10px" }}>
                         <p>
-                          <strong>Case ID</strong>: {data.caseId} <br />
-                          <strong>Created On</strong>: {createdAt} <br />
-                          <strong>Updated On</strong>: {updatedAt} <br />
-                          <strong>No of Visits</strong>: {data.noOfVisits}{" "}
-                          <br />
-                          <strong>Clinical Note</strong>: {data.clinicalNote}{" "}
-                          <br />
-                          <strong>Current Clinical Status</strong>:{" "}
-                          {data.currentClinicalStatus ? "Yes" : "No"} <br />
-                          <strong>Diagnosis Type</strong>: {data.diagnosisType}
+                          <strong>Record Id</strong>: {data.recordId} <br />
+                          <strong>Visit No</strong>: {data.visitNo} <br />
+                          <strong>Created At</strong>:{" "}
+                          {moment(data.createdAt).format("dddd, MMMM Do YYYY")}{" "}
+                          <strong>On Arrival</strong>: {data.onArrival} <br />
+                          <strong>Diagnosis</strong>: {data.diagnosis} <br />
+                          <strong>Tx</strong>: {data.Tx} <br />
+                          <strong>Report Suggestions</strong>:{" "}
+                          {data.reportSuggestions} <br />
+                          <strong>Diagnosis After Report</strong>:{" "}
+                          {data.diagnosisAfterReport} <br />
+                          <strong>Follow Up Observations</strong>:{" "}
+                          {data.followUpObservations} <br />
                           <br />
                         </p>
                       </div>
@@ -69,13 +68,59 @@ const ViewCase = (props) => {
                     <div className="media-content">
                       <div className="content" style={{ padding: "10px" }}>
                         <p>
-                          <strong>HPC</strong>: {data.HPC} <br />
-                          <strong>MoI</strong>: {data.MoI} <br />
-                          <strong>DandV</strong>: {data.DandV} <br />
-                          <strong>Icd Code</strong>: {data.icdCode.commonName}{" "}
+                          <strong>cevsSp</strong>: {data.cevsSp} <br />
+                          <strong>cevsDp</strong>: {data.cevsDp} <br />
+                          <strong>cePr</strong>: {data.cePr} <br />
+                          <strong>ceRr</strong>: {data.ceRr} <br />
+                          <strong>ceHeight</strong>: {data.ceHeight} <br />
+                          <strong>ceWeight</strong>: {data.ceWeight} <br />
+                          <strong>Medication</strong>: {data.medication} <br />
+                          <strong>Advice</strong>: {data.advice} <br />
+                          <strong>Query</strong>: {data.query} <br />
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+              <hr></hr>
+              <div className="container" style={{ padding: "10px" }}>
+                <div className="has-text-centered">
+                  <h3 className="title is-5">Patient Case Information</h3>
+                </div>
+              </div>
+              <div className="columns is-centered">
+                <div
+                  className="column is-one-third-desktop"
+                  style={{ padding: "10px" }}
+                >
+                  <article className="media">
+                    <div className="media-content">
+                      <div className="content" style={{ padding: "10px" }}>
+                        <p>
+                          <strong>Case ID:</strong>:{" "}
+                          <Link
+                            to={`/patient/${params.id}/patient-case/view/${params.case}/`}
+                          >
+                            {data.case.caseId}
+                          </Link>{" "}
                           <br />
+                          <strong>Icd Code</strong>:{" "}
+                          {data.case.icdCode.commonName} <br />
                           <strong>Icd Sub Code</strong>:{" "}
-                          {data.icdSubCode.scientificName} <br />
+                          {data.case.icdSubCode.scientificName} <br />
+                          <strong>No. Of Visits:</strong>:{" "}
+                          {data.case.noOfVisits} <br />
+                          <strong>Created At</strong>:{" "}
+                          {moment(data.case.createdAt).format(
+                            "dddd, MMMM Do YYYY, h:mm:ss a"
+                          )}{" "}
+                          <br />
+                          <strong>Updated At</strong>:{" "}
+                          {moment(data.case.updatedAt).format(
+                            "dddd, MMMM Do YYYY, h:mm:ss a"
+                          )}
+                          <br />
                         </p>
                       </div>
                     </div>
@@ -122,54 +167,6 @@ const ViewCase = (props) => {
                   </article>
                 </div>
               </div>
-              <hr></hr>
-              <div className="columns is-centered">
-                <div
-                  className="column is-one-third-desktop"
-                  style={{ padding: "10px" }}
-                >
-                  <div className="container has-text-centered">
-                    <h1 className="title is-5">Patient Records</h1>
-                    <div style={{ margin: "10px 0" }}>
-                      <Link
-                        className="button is-success"
-                        to={`/patient/${params.id}/patient-case/view/${params.case}/patient-record`}
-                      >
-                        View Records
-                      </Link>
-                    </div>
-                    <div style={{ margin: "10px 0" }}>
-                      {currentUser.role === "MedicalPractitioner" ? (
-                        <Link
-                          className="button is-success"
-                          to={`/patient/${params.id}/patient-case/view/${params.case}/patient-record/create`}
-                        >
-                          Create Record
-                        </Link>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-                <hr />
-                {currentUser.role === "MedicalPractitioner" ? (
-                  <div
-                    className="column is-one-third-desktop"
-                    style={{ padding: "10px" }}
-                  >
-                    <div className="container has-text-centered">
-                      <h1 className="title is-5">Shared Patient Records</h1>
-                      <div style={{ margin: "10px 0" }}>
-                        <Link
-                          className="button is-success"
-                          to={`/patient/${params.id}/patient-case/view/${params.case}/shared-record`}
-                        >
-                          View Shared Records
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
             </div>
           ) : null}
         </div>
@@ -178,4 +175,4 @@ const ViewCase = (props) => {
   );
 };
 
-export default ViewCase;
+export default ViewRecord;

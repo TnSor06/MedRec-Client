@@ -5,7 +5,9 @@ import HospitalCard from "../../../components/hospital-card/hospital-card.compon
 
 const DatabaseAdmin = (props) => {
   const { error, data } = props;
-  const registeredAt = data ? moment(data.registeredAt).fromNow() : null;
+  const registeredAt = data
+    ? moment(data.registeredAt).format("dddd, MMMM Do YYYY, h:mm:ss a")
+    : null;
 
   return (
     <div>

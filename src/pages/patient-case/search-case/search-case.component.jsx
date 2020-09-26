@@ -122,12 +122,12 @@ const SearchCase = (props) => {
                       <br />
                       Created At:{" "}
                       {moment(eachCase.createdAt).format(
-                        "MMMM Do YYYY, h:mm:ss a"
+                        "dddd, MMMM Do YYYY, h:mm:ss a"
                       )}
                       <br />
                       Last Updated At:{" "}
                       {moment(eachCase.updatedAt).format(
-                        "MMMM Do YYYY, h:mm:ss a"
+                        "dddd, MMMM Do YYYY, h:mm:ss a"
                       )}
                       <br />
                       &nbsp;

@@ -2,23 +2,40 @@ import { gql } from "apollo-boost";
 import React, { useContext, useState } from "react";
 import { Query } from "react-apollo";
 import { Redirect } from "react-router-dom";
-import { Spinner } from "../../../components/spinner/spinner.component";
 import { CurrentUserContext } from "../../../providers/currentUser.provider";
-import ViewRecord from "./view-record.component";
+import SearchSharedRecord from "./search-shared-record.component";
 
-const ViewRecordContainer = (props) => {
-  const [err, setErr] = useState("");
+const SearchSharedRecordContainer = (props) => {
   const { currentUser } = useContext(CurrentUserContext);
   const {
     match: { params },
   } = props;
   const caseId = params.case;
-  const recordId = params.record;
+  const [recordId, setRecordId] = useState("");
+  const [ToDate, setToDate] = useState("");
+  const [FromDate, setFromDate] = useState("");
+  const [err, setErr] = useState("");
   const [records, setRecords] = useState([]);
   const query = gql`
-    query ViewPatientRecord($recordId: String!, $caseId: String!) {
-      viewPatientRecord(recordId: $recordId, caseId: $caseId) {
-        id
+    query ViewSharedRecord(
+      $caseId: String!
+      $recordId: String
+      $ToDate: String
+      $FromDate: String
+    ) {
+      viewSharedRecord(
+        caseId: $caseId
+        recordId: $recordId
+        ToDate: $ToDate
+        FromDate: $FromDate
+      ) {
+        sharedRecordId
+        HL7
+        record {
+          recordId
+          visitNo
+          createdAt
+        }
         case {
           caseId
           createdAt
@@ -31,56 +48,23 @@ const ViewRecordContainer = (props) => {
             scientificName
           }
         }
-        recordId
-        medicalPractitioner {
-          id
+        sender {
+          mpId
           user {
             firstName
-            middleName
             lastName
-            sex
-            dob
             email
-            verified
           }
-          mpId
-          address
-          clinicAddress
-          degree
-          field
-          hospital {
-            hospitalId
-            name
-            address
-            district
-            pincode {
-              pincode
-              region
-            }
-            country {
-              countryCode
-              countryName
-            }
-          }
-          registeredAt
         }
-        visitNo
-        onArrival
-        diagnosis
-        Tx
-        reportSuggestions
-        cevsSp
-        cevsDp
-        cePr
-        ceRr
-        ceHeight
-        ceWeight
-        diagnosisAfterReport
-        medication
-        advice
-        query
-        followUpObservations
-        createdAt
+        receiver {
+          mpId
+          user {
+            firstName
+            lastName
+            email
+          }
+        }
+        sharedAt
       }
     }
   `;
@@ -91,11 +75,13 @@ const ViewRecordContainer = (props) => {
     <Query
       query={query}
       variables={{
-        recordId,
         caseId,
+        recordId,
+        ToDate,
+        FromDate,
       }}
       onCompleted={(data) => {
-        setRecords(data.viewPatientRecord);
+        setRecords(data.viewSharedRecord);
       }}
       onError={(err) => {
         if (err.graphQLErrors) {
@@ -113,19 +99,24 @@ const ViewRecordContainer = (props) => {
       {({ loading }) => {
         if (loading) {
           setErr("");
-          return <Spinner></Spinner>;
         }
         return (
-          <ViewRecord
+          <SearchSharedRecord
             {...props}
-            data={records[0]}
+            recordId={recordId}
+            setRecordId={setRecordId}
+            ToDate={ToDate}
+            setToDate={setToDate}
+            FromDate={FromDate}
+            setFromDate={setFromDate}
+            records={records}
             loading={loading}
             error={err}
-          ></ViewRecord>
+          ></SearchSharedRecord>
         );
       }}
     </Query>
   );
 };
 
-export default ViewRecordContainer;
+export default SearchSharedRecordContainer;

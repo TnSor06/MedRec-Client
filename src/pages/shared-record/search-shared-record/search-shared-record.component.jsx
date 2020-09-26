@@ -1,8 +1,9 @@
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import HL7 from "../../../components/hl7/hl7.component";
 
-const SearchRecord = (props) => {
+const SearchSharedRecord = (props) => {
   const {
     recordId,
     setRecordId,
@@ -13,13 +14,13 @@ const SearchRecord = (props) => {
     error,
     loading,
     records,
-    match,
+    match: { params },
   } = props;
   return (
     <section className="hero is-small is-light">
       <div className="hero-body">
         <div className="container has-text-centered">
-          <h1 className="title">Search Patient Record</h1>
+          <h1 className="title">Search Shared Patient Records</h1>
           <p className="help is-size-5 is-danger">{error ? error : ""}</p>
           {loading ? (
             <button className="button is-success is-loading">Loading</button>
@@ -111,36 +112,88 @@ const SearchRecord = (props) => {
                   <div className="content">
                     <p>
                       <strong>Record Id: </strong>
-                      {eachRecord.recordId}.{" "}
+                      <Link
+                        to={`/patient/${params.id}/patient-case/view/${params.case}/patient-record/view/${params.record}`}
+                      >
+                        {eachRecord.record.recordId}
+                      </Link>
+                      .{" "}
                       <small>
-                        <strong>Visits No.:</strong> {eachRecord.visitNo}
+                        <strong>Visit No.:</strong> {eachRecord.record.visitNo}
                       </small>
                       <br />
                       Created At:{" "}
-                      {moment(eachRecord.createdAt).format(
+                      {moment(eachRecord.record.createdAt).format(
                         "dddd, MMMM Do YYYY, h:mm:ss a"
                       )}
                       <br />
-                      <br />
-                      <strong>Case Details: </strong>
-                      {eachRecord.case.icdCode.commonName} -{" "}
-                      {eachRecord.case.icdSubCode.scientificName}
-                      <br />
-                      &nbsp;
+                      <strong>Case Id: </strong>
+                      <Link
+                        to={`/patient/${params.id}/patient-case/view/${params.case}`}
+                      >
+                        {eachRecord.case.caseId}
+                      </Link>
+                      .{" "}
                       <small>
                         <strong>No. of Visits:</strong>{" "}
                         {eachRecord.case.noOfVisits}
                       </small>
+                      <br />
+                      <strong>Details: </strong>
+                      {eachRecord.case.icdCode.commonName} -{" "}
+                      {eachRecord.case.icdSubCode.scientificName}
+                      <br />
+                      Created At:{" "}
+                      {moment(eachRecord.case.createdAt).format(
+                        "dddd, MMMM Do YYYY, h:mm:ss a"
+                      )}
+                      <br />
+                      Last Updated At:{" "}
+                      {moment(eachRecord.case.updatedAt).format(
+                        "dddd, MMMM Do YYYY, h:mm:ss a"
+                      )}
+                      <br />
+                      &nbsp;
+                    </p>
+                    <p>
+                      <strong>Sender: </strong>
+                      {eachRecord.sender.user.firstName}{" "}
+                      {eachRecord.sender.user.lastName}.{" "}
+                      <small>
+                        &nbsp;<strong>MpID:</strong>{" "}
+                        <Link
+                          to={`/medicalpractitioner/${eachRecord.sender.mpId}`}
+                        >
+                          {eachRecord.sender.mpId}
+                        </Link>
+                      </small>
+                      <br />
+                      <strong>Receiver: </strong>
+                      {eachRecord.receiver.user.firstName}{" "}
+                      {eachRecord.receiver.user.lastName}.{" "}
+                      <small>
+                        &nbsp;<strong>MpID:</strong>{" "}
+                        <Link
+                          to={`/medicalpractitioner/${eachRecord.receiver.mpId}`}
+                        >
+                          {eachRecord.receiver.mpId}
+                        </Link>
+                      </small>
+                      <br />
+                      Shared At:{" "}
+                      {moment(eachRecord.sharedAt).format(
+                        "dddd, MMMM Do YYYY, h:mm:ss a"
+                      )}
+                      <br />
+                      &nbsp;
                     </p>
                   </div>
                 </div>
                 <div className="media-right">
-                  <Link
-                    to={`${match.url}/view/${eachRecord.recordId}`}
-                    className="button is-success"
-                  >
-                    View Record
-                  </Link>
+                  <HL7
+                    HL7={eachRecord.HL7}
+                    caseId={eachRecord.case.caseId}
+                  ></HL7>
                 </div>
               </article>
             );
@@ -151,4 +204,4 @@ const SearchRecord = (props) => {
   );
 };
 
-export default SearchRecord;
+export default SearchSharedRecord;

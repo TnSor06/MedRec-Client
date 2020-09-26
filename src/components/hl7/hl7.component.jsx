@@ -61,7 +61,12 @@ const HL7 = (props) => {
       {msg ? (
         <div
           className="notification is-success"
-          style={{ position: "absolute", bottom: "10px" }}
+          style={{
+            position: "fixed",
+            bottom: "10px",
+            right: "10px",
+            zIndex: "99999",
+          }}
         >
           {msg}
         </div>
