@@ -78,10 +78,6 @@ const ViewPatientContainer = (props) => {
           insuranceCompany2
           sponsorerDetails
         }
-        patientCase {
-          caseId
-          createdAt
-        }
       }
     }
   `;

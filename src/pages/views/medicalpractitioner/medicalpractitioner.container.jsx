@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { CurrentUserContext } from "../../../providers/currentUser.provider";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import MeMedicalPractitionerContainer from "./memedicalpractitioner.container";
 import ViewMedicalPractitionerContainer from "./viewmedicalpractitioner.container";
 
@@ -11,7 +11,7 @@ const MedicalPractitionerContainer = (props) => {
     return <Redirect to="/"></Redirect>;
   }
   return (
-    <div>
+    <Switch>
       <Route
         exact
         path={`${match.path}`}
@@ -22,7 +22,7 @@ const MedicalPractitionerContainer = (props) => {
         path={`${match.path}/:id`}
         component={ViewMedicalPractitionerContainer}
       ></Route>
-    </div>
+    </Switch>
   );
 };
 

@@ -120,21 +120,6 @@ const Patient = (props) => {
                 >
                   <div className="container has-text-centered">
                     <h1 className="title is-5">Patient Cases</h1>
-                    {data.patientCase.map((eachCase, key) => {
-                      const createdAt = eachCase
-                        ? moment(eachCase.createdAt).fromNow()
-                        : null;
-                      return (
-                        <div key={key}>
-                          {" "}
-                          <Link
-                            to={`/patient/${data.patientId}/patient-case/view/${eachCase.caseId}`}
-                          >
-                            {eachCase.caseId}-{createdAt}
-                          </Link>
-                        </div>
-                      );
-                    })}
                     <div style={{ margin: "10px 0" }}>
                       <Link
                         className="button is-success"
@@ -154,6 +139,20 @@ const Patient = (props) => {
                       ) : null}
                     </div>
                   </div>
+                  <hr />
+                  {currentUser.role === "MedicalPractitioner" ? (
+                    <div className="container has-text-centered">
+                      <h1 className="title is-5">Shared Patient Cases</h1>
+                      <div style={{ margin: "10px 0" }}>
+                        <Link
+                          className="button is-success"
+                          to={`/patient/${data.patientId}/shared-case`}
+                        >
+                          View Shared Cases
+                        </Link>
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               </div>
               <hr></hr>

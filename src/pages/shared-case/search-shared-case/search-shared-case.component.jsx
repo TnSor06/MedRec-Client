@@ -1,8 +1,9 @@
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import HL7 from "../../../components/hl7/hl7.component";
 
-const SearchCase = (props) => {
+const SearchSharedCase = (props) => {
   const {
     caseId,
     setCaseId,
@@ -19,7 +20,7 @@ const SearchCase = (props) => {
     <section className="hero is-small is-light">
       <div className="hero-body">
         <div className="container has-text-centered">
-          <h1 className="title">Search Patient Case</h1>
+          <h1 className="title">Search Shared Patient Case</h1>
           <p className="help is-size-5 is-danger">{error ? error : ""}</p>
           {loading ? (
             <button className="button is-success is-loading">Loading</button>
@@ -111,22 +112,62 @@ const SearchCase = (props) => {
                   <div className="content">
                     <p>
                       <strong>Case Id: </strong>
-                      {eachCase.caseId}.{" "}
+                      <Link
+                        to={`${match.url.replace("shared", "patient")}/view/${
+                          eachCase.case.caseId
+                        }`}
+                      >
+                        {eachCase.case.caseId}
+                      </Link>
+                      .{" "}
                       <small>
-                        <strong>No. of Visits:</strong> {eachCase.noOfVisits}
+                        <strong>No. of Visits:</strong>{" "}
+                        {eachCase.case.noOfVisits}
                       </small>
                       <br />
                       <strong>Details: </strong>
-                      {eachCase.icdCode.commonName} -{" "}
-                      {eachCase.icdSubCode.scientificName}
+                      {eachCase.case.icdCode.commonName} -{" "}
+                      {eachCase.case.icdSubCode.scientificName}
                       <br />
                       Created At:{" "}
-                      {moment(eachCase.createdAt).format(
+                      {moment(eachCase.case.createdAt).format(
                         "MMMM Do YYYY, h:mm:ss a"
                       )}
                       <br />
                       Last Updated At:{" "}
-                      {moment(eachCase.updatedAt).format(
+                      {moment(eachCase.case.updatedAt).format(
+                        "MMMM Do YYYY, h:mm:ss a"
+                      )}
+                      <br />
+                      &nbsp;
+                    </p>
+                    <p>
+                      <strong>Sender: </strong>
+                      {eachCase.sender.user.firstName}{" "}
+                      {eachCase.sender.user.lastName}.{" "}
+                      <small>
+                        &nbsp;<strong>MpID:</strong>{" "}
+                        <Link
+                          to={`/medicalpractitioner/${eachCase.sender.mpId}`}
+                        >
+                          {eachCase.sender.mpId}
+                        </Link>
+                      </small>
+                      <br />
+                      <strong>Receiver: </strong>
+                      {eachCase.receiver.user.firstName}{" "}
+                      {eachCase.receiver.user.lastName}.{" "}
+                      <small>
+                        &nbsp;<strong>MpID:</strong>{" "}
+                        <Link
+                          to={`/medicalpractitioner/${eachCase.receiver.mpId}`}
+                        >
+                          {eachCase.receiver.mpId}
+                        </Link>
+                      </small>
+                      <br />
+                      Shared At:{" "}
+                      {moment(eachCase.sharedAt).format(
                         "MMMM Do YYYY, h:mm:ss a"
                       )}
                       <br />
@@ -135,12 +176,7 @@ const SearchCase = (props) => {
                   </div>
                 </div>
                 <div className="media-right">
-                  <Link
-                    to={`${match.url}/view/${eachCase.caseId}`}
-                    className="button is-success"
-                  >
-                    View Case
-                  </Link>
+                  <HL7 HL7={eachCase.HL7} caseId={eachCase.case.caseId}></HL7>
                 </div>
               </article>
             );
@@ -151,4 +187,4 @@ const SearchCase = (props) => {
   );
 };
 
-export default SearchCase;
+export default SearchSharedCase;

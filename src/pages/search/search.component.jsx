@@ -70,7 +70,7 @@ const Search = (props) => {
           <div className="column is-one-third-desktop">
             <div className="field">
               <label className="label">Type</label>
-              <div className="select">
+              <div className="select is-rounded">
                 <select
                   value={type}
                   onChange={(event) => {

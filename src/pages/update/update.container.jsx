@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import { CurrentUserContext } from "../../providers/currentUser.provider";
 import Update from "./update.component";
 import ChangePasswordContainer from "../../components/change-password/change-password.container";
@@ -14,7 +14,7 @@ const UpdateContainer = (props) => {
     return <Redirect to="/"></Redirect>;
   }
   return (
-    <div>
+    <Switch>
       <Route exact path={`${match.path}`} component={Update}></Route>
       <Route
         exact
@@ -36,7 +36,7 @@ const UpdateContainer = (props) => {
         path={`${match.path}/patient-details`}
         component={PatientDetailsContainer}
       ></Route>
-    </div>
+    </Switch>
   );
 };
 

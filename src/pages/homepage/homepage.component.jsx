@@ -1,6 +1,6 @@
 import React from "react";
 import "./homepage.styles.scss";
-const Homepage = () => {
+const Homepage = (props) => {
   return (
     <div className="homepage-wrapper">
       <section className="hero is-large is-light is-bold">

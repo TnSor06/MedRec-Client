@@ -23,6 +23,45 @@ const ViewCaseContainer = (props) => {
         createdAt
         updatedAt
         noOfVisits
+        HPC
+        MoI
+        DandV
+        clinicalNote
+        noOfVisits
+        diagnosisType
+        currentClinicalStatus
+        medicalPractitioner {
+          id
+          user {
+            firstName
+            middleName
+            lastName
+            sex
+            dob
+            email
+            verified
+          }
+          mpId
+          address
+          clinicAddress
+          degree
+          field
+          hospital {
+            hospitalId
+            name
+            address
+            district
+            pincode {
+              pincode
+              region
+            }
+            country {
+              countryCode
+              countryName
+            }
+          }
+          registeredAt
+        }
         icdCode {
           commonName
         }

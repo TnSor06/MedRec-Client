@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import Register from "./register.component";
 import { CurrentUserContext } from "../../providers/currentUser.provider";
 import RegisterPatientContainer from "./patient/register-patient.container";
@@ -13,7 +13,7 @@ const RegisterContainer = (props) => {
     return <Redirect to="/"></Redirect>;
   }
   return (
-    <div>
+    <Switch>
       <Route exact path={`${match.path}`} component={Register}></Route>
       <Route
         exact
@@ -30,7 +30,7 @@ const RegisterContainer = (props) => {
         path={`${match.path}/database-admin`}
         component={RegisterDatabaseAdminContainer}
       ></Route>
-    </div>
+    </Switch>
   );
 };
 

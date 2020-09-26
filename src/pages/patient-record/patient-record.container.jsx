@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import SearchRecordContainer from "./search-record/search-record.container";
 import CreateRecordContainer from "./create-record/create-record.container";
 import ViewRecordContainer from "./view-record/view-record.container";
@@ -12,7 +12,7 @@ const PatientRecordContainer = (props) => {
     return <Redirect to="/"></Redirect>;
   }
   return (
-    <div>
+    <Switch>
       <Route
         exact
         path={`${match.path}`}
@@ -28,7 +28,7 @@ const PatientRecordContainer = (props) => {
         path={`${match.path}/view/:record`}
         component={ViewRecordContainer}
       ></Route>
-    </div>
+    </Switch>
   );
 };
 

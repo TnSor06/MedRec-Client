@@ -2,24 +2,24 @@ import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-const SearchCase = (props) => {
+const SearchRecord = (props) => {
   const {
-    caseId,
-    setCaseId,
+    recordId,
+    setRecordId,
     ToDate,
     setToDate,
     FromDate,
     setFromDate,
     error,
     loading,
-    cases,
+    records,
     match,
   } = props;
   return (
     <section className="hero is-small is-light">
       <div className="hero-body">
         <div className="container has-text-centered">
-          <h1 className="title">Search Patient Case</h1>
+          <h1 className="title">Search Patient Record</h1>
           <p className="help is-size-5 is-danger">{error ? error : ""}</p>
           {loading ? (
             <button className="button is-success is-loading">Loading</button>
@@ -30,16 +30,16 @@ const SearchCase = (props) => {
         <div className="columns is-centered">
           <div className="column is-one-third-desktop">
             <div className="field">
-              <label className="label">Case Id</label>
+              <label className="label">Record Id</label>
               <div className="control has-icons-left">
                 <input
                   className="input"
                   type="text"
-                  placeholder="Case Id"
-                  value={caseId}
+                  placeholder="Record Id"
+                  value={recordId}
                   onChange={(event) => {
                     const value = event.target.value;
-                    setCaseId(value);
+                    setRecordId(value);
                   }}
                 />
                 <span className="icon is-small is-left">
@@ -96,7 +96,8 @@ const SearchCase = (props) => {
           style={{ backgroundColor: "#363636" }}
         ></hr>
         <div className="container">
-          {cases.map((eachCase, key) => {
+          {records.map((eachRecord, key) => {
+            console.log(eachRecord);
             return (
               <article
                 key={key}
@@ -110,36 +111,36 @@ const SearchCase = (props) => {
                 <div className="media-content">
                   <div className="content">
                     <p>
-                      <strong>Case Id: </strong>
-                      {eachCase.caseId}.{" "}
+                      <strong>Record Id: </strong>
+                      {eachRecord.recordId}.{" "}
                       <small>
-                        <strong>No. of Visits:</strong> {eachCase.noOfVisits}
+                        <strong>Visits No.:</strong> {eachRecord.visitNo}
                       </small>
                       <br />
-                      <strong>Details: </strong>
-                      {eachCase.icdCode.commonName} -{" "}
-                      {eachCase.icdSubCode.scientificName}
-                      <br />
                       Created At:{" "}
-                      {moment(eachCase.createdAt).format(
+                      {moment(eachRecord.createdAt).format(
                         "MMMM Do YYYY, h:mm:ss a"
                       )}
                       <br />
-                      Last Updated At:{" "}
-                      {moment(eachCase.updatedAt).format(
-                        "MMMM Do YYYY, h:mm:ss a"
-                      )}
+                      <br />
+                      <strong>Case Details: </strong>
+                      {eachRecord.case.icdCode.commonName} -{" "}
+                      {eachRecord.case.icdSubCode.scientificName}
                       <br />
                       &nbsp;
+                      <small>
+                        <strong>No. of Visits:</strong>{" "}
+                        {eachRecord.case.noOfVisits}
+                      </small>
                     </p>
                   </div>
                 </div>
                 <div className="media-right">
                   <Link
-                    to={`${match.url}/view/${eachCase.caseId}`}
+                    to={`${match.url}/view/${eachRecord.recordId}`}
                     className="button is-success"
                   >
-                    View Case
+                    View Record
                   </Link>
                 </div>
               </article>
@@ -151,4 +152,4 @@ const SearchCase = (props) => {
   );
 };
 
-export default SearchCase;
+export default SearchRecord;

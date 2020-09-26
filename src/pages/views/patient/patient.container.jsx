@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { CurrentUserContext } from "../../../providers/currentUser.provider";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import MePatientContainer from "./mePatient.container";
 import ViewPatientContainer from "./viewPatient.container";
 import PatientCaseContainer from "../../patient-case/patient-case.container";
+import SharedCaseContainer from "../../shared-case/shared-case.container";
 
 const PatientContainer = (props) => {
   const { match } = props;
@@ -12,7 +13,7 @@ const PatientContainer = (props) => {
     return <Redirect to="/"></Redirect>;
   }
   return (
-    <div>
+    <Switch>
       <Route
         exact
         path={`${match.path}`}
@@ -24,10 +25,14 @@ const PatientContainer = (props) => {
         component={ViewPatientContainer}
       ></Route>
       <Route
+        path={`${match.path}/:id/shared-case`}
+        component={SharedCaseContainer}
+      ></Route>
+      <Route
         path={`${match.path}/:id/patient-case`}
         component={PatientCaseContainer}
       ></Route>
-    </div>
+    </Switch>
   );
 };
 

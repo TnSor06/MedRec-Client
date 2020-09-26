@@ -3,39 +3,39 @@ import React, { useContext, useState } from "react";
 import { Query } from "react-apollo";
 import { Redirect } from "react-router-dom";
 import { CurrentUserContext } from "../../../providers/currentUser.provider";
-import SearchRecord from "./search-record.component";
+import SearchSharedCase from "./search-shared-case.component";
 
-const SearchRecordContainer = (props) => {
+const SearchSharedCaseContainer = (props) => {
   const { currentUser } = useContext(CurrentUserContext);
   const {
     match: { params },
   } = props;
-  const caseId = params.case;
-  const [recordId, setRecordId] = useState("");
+  const patientId = params.id;
+  const [caseId, setCaseId] = useState("");
   const [ToDate, setToDate] = useState("");
   const [FromDate, setFromDate] = useState("");
   const [err, setErr] = useState("");
-  const [records, setRecords] = useState([]);
+  const [cases, setCases] = useState([]);
   const query = gql`
-    query ViewPatientRecord(
-      $caseId: String!
-      $recordId: String
+    query ViewSharedCase(
+      $patientId: String!
+      $caseId: String
       $ToDate: String
       $FromDate: String
     ) {
-      viewPatientRecord(
+      viewSharedCase(
+        patientId: $patientId
         caseId: $caseId
-        recordId: $recordId
         ToDate: $ToDate
         FromDate: $FromDate
       ) {
-        id
-        recordId
-        createdAt
-        visitNo
+        sharedCaseId
+        HL7
         case {
-          noOfVisits
+          caseId
+          createdAt
           updatedAt
+          noOfVisits
           icdCode {
             commonName
           }
@@ -43,6 +43,23 @@ const SearchRecordContainer = (props) => {
             scientificName
           }
         }
+        sender {
+          mpId
+          user {
+            firstName
+            lastName
+            email
+          }
+        }
+        receiver {
+          mpId
+          user {
+            firstName
+            lastName
+            email
+          }
+        }
+        sharedAt
       }
     }
   `;
@@ -53,13 +70,13 @@ const SearchRecordContainer = (props) => {
     <Query
       query={query}
       variables={{
+        patientId,
         caseId,
-        recordId,
         ToDate,
         FromDate,
       }}
       onCompleted={(data) => {
-        setRecords(data.viewPatientRecord);
+        setCases(data.viewSharedCase);
       }}
       onError={(err) => {
         if (err.graphQLErrors) {
@@ -79,22 +96,22 @@ const SearchRecordContainer = (props) => {
           setErr("");
         }
         return (
-          <SearchRecord
+          <SearchSharedCase
             {...props}
-            recordId={recordId}
-            setRecordId={setRecordId}
+            caseId={caseId}
+            setCaseId={setCaseId}
             ToDate={ToDate}
             setToDate={setToDate}
             FromDate={FromDate}
             setFromDate={setFromDate}
-            records={records}
+            cases={cases}
             loading={loading}
             error={err}
-          ></SearchRecord>
+          ></SearchSharedCase>
         );
       }}
     </Query>
   );
 };
 
-export default SearchRecordContainer;
+export default SearchSharedCaseContainer;
