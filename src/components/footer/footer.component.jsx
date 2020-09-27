@@ -5,9 +5,22 @@ const Footer = () => {
     <footer className="footer is-dark">
       <div className="content has-text-centered">
         <p>
-          <strong className="is-size-4 is-uppercase is-family-code">
-            Medrec
-          </strong>
+          <span
+            style={{
+              border: "3px solid #3398fe22",
+              borderRadius: "20px",
+            }}
+          >
+            <img
+              src={process.env.PUBLIC_URL + "/medrec-64.png"}
+              alt="Medrec Logo"
+              className="is-64x64"
+            />{" "}
+            <br />
+            <strong className="is-size-4 is-uppercase is-family-code">
+              Medrec
+            </strong>
+          </span>
           <br />
           <a href="https://github.com/TnSor06/MedRec-Server_v2">
             Server Code

@@ -27,15 +27,31 @@ const Header = (props) => {
     >
       <div className="navbar-brand">
         <Link className="navbar-item" to="/">
-          Medrec
+          <img
+            src={process.env.PUBLIC_URL + "/medrec-64.png"}
+            alt="Medrec Logo"
+            className="is-64x64"
+          />{" "}
+          &nbsp;{" "}
+          <p className="is-family-code is-uppercase has-text-weight-semibold">
+            Medrec
+          </p>
         </Link>
         <a
           role="button"
           className="navbar-burger burger"
           aria-label="menu"
           aria-expanded="false"
-          data-target="navbarBasicExample"
+          data-target="navbarHeader"
           href="/#"
+          onClick={(event) => {
+            event.preventDefault();
+            const targetElement = document.getElementById(
+              event.currentTarget.dataset.target
+            );
+            event.currentTarget.classList.toggle("is-active");
+            targetElement.classList.toggle("is-active");
+          }}
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -43,7 +59,7 @@ const Header = (props) => {
         </a>
       </div>
 
-      <div id="navbarBasicExample" className="navbar-menu">
+      <div id="navbarHeader" className="navbar-menu">
         {currentUser ? (
           <div className="navbar-start">
             {headerLinks[currentUser.role].map((link, key) => {
