@@ -15,12 +15,12 @@ import { setContext } from "apollo-link-context";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { AUTH_TOKEN } from "./constants";
+import { AUTH_TOKEN, SERVER_URL } from "./constants";
 import CurrentUserProvider from "./providers/currentUser.provider";
 
 //Establish Connection
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000/",
+  uri: SERVER_URL,
 });
 
 const authLink = setContext((_, { headers }) => {
