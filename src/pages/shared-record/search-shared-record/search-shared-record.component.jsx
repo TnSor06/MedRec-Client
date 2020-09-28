@@ -113,7 +113,7 @@ const SearchSharedRecord = (props) => {
                     <p>
                       <strong>Record Id: </strong>
                       <Link
-                        to={`/patient/${params.id}/patient-case/view/${params.case}/patient-record/view/${params.record}`}
+                        to={`/patient/${params.id}/patient-case/view/${params.case}/patient-record/view/${eachRecord.record.recordId}`}
                       >
                         {eachRecord.record.recordId}
                       </Link>

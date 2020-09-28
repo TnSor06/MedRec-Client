@@ -1,6 +1,12 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import "./homepage.styles.scss";
 const Homepage = (props) => {
+  const query = new URLSearchParams(props.location.search);
+  const redirectURL = query.get("redirect");
+  if (redirectURL) {
+    return <Redirect to={redirectURL}></Redirect>;
+  }
   return (
     <div className="homepage-wrapper">
       <section className="hero is-large is-light is-bold">

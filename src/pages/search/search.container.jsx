@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Query } from "react-apollo";
 import Search from "./search.component";
 import { gql } from "apollo-boost";
+import { CurrentUserContext } from "../../providers/currentUser.provider";
+import { Redirect } from "react-router-dom";
 const SearchContainer = (props) => {
+  const { currentUser } = useContext(CurrentUserContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [type, setType] = useState("Patient");
@@ -25,6 +28,9 @@ const SearchContainer = (props) => {
       }
     }
   `;
+  if (!currentUser || currentUser.role === "Patient") {
+    return <Redirect to="/"></Redirect>;
+  }
   return (
     <Query
       query={SEARCH_USER}
