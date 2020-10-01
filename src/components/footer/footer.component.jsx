@@ -1,5 +1,4 @@
 import React from "react";
-import { SERVER_URL } from "../../constants";
 
 const Footer = () => {
   return (
@@ -30,7 +29,7 @@ const Footer = () => {
           <a href="https://github.com/TnSor06/MedRec-Client">Client Code</a>{" "}
           built over React, React-GraphQL, Apollo-Client, Bulma.
           <br />
-          <a href={`${SERVER_URL}/playground`}>
+          <a href={`${window.location.origin}/playground`}>
             <strong>Documentation for API.</strong>
           </a>{" "}
         </p>
