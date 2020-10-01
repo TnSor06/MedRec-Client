@@ -1,4 +1,5 @@
 import React from "react";
+import { SERVER_URL } from "../../constants";
 
 const Footer = () => {
   return (
@@ -28,6 +29,10 @@ const Footer = () => {
           built over Node, Prisma, GraphQL.{" "}
           <a href="https://github.com/TnSor06/MedRec-Client">Client Code</a>{" "}
           built over React, React-GraphQL, Apollo-Client, Bulma.
+          <br />
+          <a href={`${SERVER_URL}/playground`}>
+            <strong>Documentation for API.</strong>
+          </a>{" "}
         </p>
         <p>
           <strong className="is-size-5 is-uppercase is-family-code">

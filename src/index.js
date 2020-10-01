@@ -20,7 +20,7 @@ import CurrentUserProvider from "./providers/currentUser.provider";
 
 //Establish Connection
 const httpLink = createHttpLink({
-  uri: SERVER_URL,
+  uri: `${SERVER_URL}/graphql`,
 });
 
 const authLink = setContext((_, { headers }) => {
