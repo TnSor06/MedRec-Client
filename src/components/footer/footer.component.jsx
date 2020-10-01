@@ -22,14 +22,28 @@ const Footer = () => {
             </strong>
           </span>
           <br />
-          <a href="https://github.com/TnSor06/MedRec-Server_v2">
+          <a
+            href="https://github.com/TnSor06/MedRec-Server_v2"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Server Code
           </a>{" "}
           built over Node, Prisma, GraphQL.{" "}
-          <a href="https://github.com/TnSor06/MedRec-Client">Client Code</a>{" "}
+          <a
+            href="https://github.com/TnSor06/MedRec-Client"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Client Code
+          </a>{" "}
           built over React, React-GraphQL, Apollo-Client, Bulma.
           <br />
-          <a href={`${window.location.origin}/playground`}>
+          <a
+            href={`${window.location.origin}/playground`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <strong>Documentation for API.</strong>
           </a>{" "}
         </p>
